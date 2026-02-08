@@ -1,0 +1,48 @@
+schema_version: 1
+
+context:
+  name: unix-ar
+  version: 0.2.1
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/unix_ar-${{ version }}.tar.gz
+  sha256: bf9328ec70fa3a82f94dc26dc125264dbf62a2d8ffb1a3c8c8a8230175e72c4e
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - setuptools
+  run:
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - unix_ar
+      python_version: ${{ python_min }}.*
+  - requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - pip check
+
+about:
+  summary: AR file handling
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  homepage: https://github.com/getninjas/unix_ar
+
+extra:
+  recipe-maintainers:
+    - pavelzw
